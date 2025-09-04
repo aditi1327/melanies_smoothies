@@ -4,15 +4,14 @@ from snowflake.snowpark.functions import col
 
 # Write directly to the app
 st.title(":cup_with_straw: customize your smoothie! :cup_with_straw:")
-st.write("choose the fruits you want in your custom smoothie!")
-
-import streamlit as st
+st.write("Orders that need to be filled")
 
 name_on_order = st.text_input("Name on Smoothie:")
 st.write("The name on your smoothie will be ",name_on_order )
 
 cnx = st.connection("snowflake")
 session = cnx.session()
+
 my_dataframe = session.table("smoothies.public.fruit_options").select(col('fruit_name'))
 st.dataframe(data=my_dataframe, use_container_width=True)
 
@@ -40,4 +39,3 @@ if ingredients_list:
    if time_to_insert:
        session.sql(my_insert_stmt).collect()
        st.success('Your Smoothie is ordered!', icon="✅")
-
